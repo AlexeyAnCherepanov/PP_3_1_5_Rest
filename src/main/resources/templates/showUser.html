@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Страница пользователя</title>
+</head>
+<body>
+
+<form method="POST" th:action="@{/logout}" th:object="${user}">
+
+    <div class="main block">
+
+        <h3>Страница пользователя</h3>
+
+
+            <label>Имя</label>
+            <td th:text="${user.getUsername()}" />
+        </div>
+
+        <div>
+        <label>Роль </label>
+        <td th:text="${user.getRoles()}">
+        </td>
+
+        <br>
+        <form th:method="POST" th:action="@{/logout}">
+            <input type="submit" value="Выйти из системы"/>
+        </form>
+
+    </div>
+</form>
+</body>
+</html>
