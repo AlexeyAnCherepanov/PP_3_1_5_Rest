@@ -12,17 +12,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import ru.kata.spring.boot_security.demo.services.DetailsService;
-import ru.kata.spring.boot_security.demo.services.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
-    private DetailsService userService;
+    private final UserDetailsService userService;
 
     @Autowired
-    public WebSecurityConfig(DetailsService userService, AuthenticationSuccessHandler authenticationSuccessHandler) {
+    public WebSecurityConfig(UserDetailsService userService, AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.userService = userService;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
@@ -37,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().successHandler(authenticationSuccessHandler).permitAll()
                 .and()
-                .logout().permitAll()
-                .and().csrf().disable();
+                .logout().permitAll();
+
 
     }
     @Override
