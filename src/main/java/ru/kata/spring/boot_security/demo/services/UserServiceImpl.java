@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
@@ -17,16 +18,26 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserDao userDao;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserDao userDao) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userDao = userDao;
     }
 
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+    @Override
+    public User findByUsername(String username) {
+        User user = userDao.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Пользователь с таким именем не найден");
+        }
+        return user;
     }
 
     @Override
@@ -50,8 +61,6 @@ public class UserServiceImpl implements UserService {
             userFromDB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
             userRepository.save(userFromDB);
         }
-
-        userRepository.save(userFromDB);
     }
 
     @Transactional

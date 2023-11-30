@@ -14,15 +14,20 @@
         <h3>Страница пользователя</h3>
 
 
-            <label>Имя</label>
-            <td th:text="${user.getUsername()}" />
-        </div>
+        <label>Псевдоним</label>
+        <td th:text="${user.getUsername()}"/>
 
-        <div>
-        <label>Роль </label>
-        <td th:text="${user.getRoles()}">
-        </td>
+        <label>Роль</label>
+        <td th:text="${user.getRoles()}"/>
 
+        <label>Имя</label>
+        <td th:text="${user.getFirstname()}"/>
+
+        <label>Фамилия </label>
+        <td th:text="${user.getLastname()}"/>
+
+        <label>Возраст</label>
+        <td th:text="${user.getAge()}"/>
         <br>
         <form th:method="POST" th:action="@{/logout}">
             <input type="submit" value="Выйти из системы"/>
