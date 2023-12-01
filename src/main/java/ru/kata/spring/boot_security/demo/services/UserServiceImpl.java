@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -29,11 +30,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
     @Override
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         if (userRepository.findByUsername(username).isEmpty()) {
             throw new UsernameNotFoundException("Пользователь с таким именем не найден");
         }
-        return userRepository.findByUsername(username).get();
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -46,8 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUser(User updateUser, Long id) {
-        User userFromDB = userRepository.findById(id).get();
+    public void updateUser(User updateUser) {
+        User userFromDB = userRepository.findById(updateUser.getId()).get();
         userFromDB.setUsername(updateUser.getUsername());
         userFromDB.setRoles((List<Role>) updateUser.getAuthorities());
 
