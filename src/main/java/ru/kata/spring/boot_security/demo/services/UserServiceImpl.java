@@ -1,11 +1,9 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
@@ -31,33 +29,28 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public Optional<User> findByUsername(String username) {
-        if (userRepository.findByUsername(username).isEmpty()) {
-            throw new UsernameNotFoundException("Пользователь с таким именем не найден");
-        }
         return userRepository.findByUsername(username);
     }
 
     @Override
-    public User findUserById(Long id) {
-        if (userRepository.findById(id).isEmpty()) {
-            throw new UsernameNotFoundException("Пользователь с таким ID не найден");
-        }
-        return userRepository.findById(id).get();
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
+
 
     @Transactional
     @Override
     public void updateUser(User updateUser) {
-        User userFromDB = userRepository.findById(updateUser.getId()).get();
-        userFromDB.setUsername(updateUser.getUsername());
-        userFromDB.setRoles((List<Role>) updateUser.getAuthorities());
+        User user = findUserById(updateUser.getId()).get();
+        String newPassword = updateUser.getPassword();
 
-        if (userFromDB.getPassword().equals(updateUser.getPassword())) {
-            userRepository.save(userFromDB);
+        if (!newPassword.equals(user.getPassword()) && !newPassword.isEmpty()) {
+            updateUser.setPassword(passwordEncoder.encode(newPassword));
         } else {
-            userFromDB.setPassword(passwordEncoder.encode(updateUser.getPassword()));
-            userRepository.save(userFromDB);
+            updateUser.setPassword(user.getPassword());
         }
+
+        userRepository.save(updateUser);
     }
 
     @Transactional
@@ -68,11 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUserById(Long id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
+
 }

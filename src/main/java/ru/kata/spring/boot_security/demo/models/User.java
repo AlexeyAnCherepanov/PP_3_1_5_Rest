@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -105,9 +106,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRole()))
+                .toList();
     }
-
     @Override
     public String getPassword() {
         return password;
@@ -160,4 +162,6 @@ public class User implements UserDetails {
     public int hashCode() {
         return Objects.hash(id, username, password, roles);
     }
+
+
 }

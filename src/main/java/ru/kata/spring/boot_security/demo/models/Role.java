@@ -16,10 +16,10 @@ public class Role implements GrantedAuthority {
 
     public Role() {
     }
-    public Role(String role) {
+    public Role(Long id, String role) {
+        this.id = id;
         this.role = role;
     }
-
     public Long getId() {
         return id;
     }
@@ -34,7 +34,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return getRole();
+        return role;
     }
 
     @Override
