@@ -13,14 +13,15 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 @Service
 public class DetailsService implements UserDetailsService {
     private UserRepository userRepository;
+
     @Autowired
-    public void setUserRepository(UserRepository userRepository){
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    @Override
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return  userRepository.findByUsername(username).orElseThrow(()
+        return userRepository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
 
     }
