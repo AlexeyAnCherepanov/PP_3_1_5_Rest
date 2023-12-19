@@ -30,28 +30,9 @@ public class AdminRestController {
         this.roleService = roleService;
     }
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity <>(userService.findAll(), HttpStatus.OK);
     }
-    @GetMapping("/admin")
-    public ModelAndView getUsersList(Principal principal, Model model) {
-        ModelAndView admin = new ModelAndView("admin/control-panel");
-        addAttributesToMainPage(model, principal);
-        return admin;
-    }
-
-    private void addAttributesToMainPage(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName()).orElse(new User());
-        List<String> roles = user.getRoles().stream()
-                .map(Role::getRole)
-                .map(role -> role.split("_")[1])
-                .toList();
-
-        model.addAttribute("authUser", user);
-        model.addAttribute("userRoles", roles);
-        model.addAttribute("listRoles", roleService.findAll());
-    }
-
     @PostMapping("/users")
     public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid User user,
                                                  BindingResult bindingResult) {
