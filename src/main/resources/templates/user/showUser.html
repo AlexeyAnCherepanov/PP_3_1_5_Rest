@@ -40,14 +40,7 @@
                                     <th>Roles</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text="${authUser.id}"></td>
-                                    <td th:text="${authUser.username}"></td>
-                                    <td th:text="${authUser.firstname}"></td>
-                                    <td th:text="${authUser.age}"></td>
-                                    <td th:text = "${#strings.listJoin(userRoles, ', ')}"></td>
-                                </tr>
+                                <tbody id="tableUser">
                                 </tbody>
                             </table>
                         </div>
@@ -58,5 +51,13 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="/js/current-user.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -9,7 +9,7 @@
   <ul class="nav nav-pills nav-fill flex-column mb-sm-auto mb-0" id="menu">
     <div sec:authorize="hasRole('ROLE_ADMIN')">
       <li class="nav-item" >
-        <a class="nav-link text-start" aria-current="page" href="/api/admin"
+        <a class="nav-link text-start" aria-current="page" href="/admin"
            th:classappend="${active_link == '/users'} ? 'active'">
           Admin
         </a>

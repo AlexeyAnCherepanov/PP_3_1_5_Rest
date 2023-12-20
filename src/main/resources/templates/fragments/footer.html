@@ -9,7 +9,7 @@
     <nav class="navbar bg-dark navbar-dark">
         <div class="container-fluid">
                 <span class="navbar-text font-weight-bold me-1 fw-bold"
-                      th:text="${authUser.username}">username</span>
+                      th:text="${authUser?.username}">username</span>
             <span class="navbar-text me-auto" th:text = "'with roles: ' + ${#strings.listJoin(userRoles, ', ')}">
                 </span>
             <form th:action="@{/logout}" method="POST">
